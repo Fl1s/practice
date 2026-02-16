@@ -5,10 +5,7 @@
       <SelectionState runConfigName="main">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="GreetingPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="MainActivity2">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
