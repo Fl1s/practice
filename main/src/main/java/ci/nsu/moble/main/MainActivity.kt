@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         "red" to Color.Red,
         "blue" to Color.Blue,
         "green" to Color.Green,
+        "cyan" to Color.Cyan,
+        "magenta" to Color.Magenta,
         "yellow" to Color.Yellow,
         "black" to Color.Black
     );
@@ -50,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun UserTheme(colors: Map<String, Color>) {
+    fun UserTheme() {
         var inputText by remember { mutableStateOf("") }
         var buttonColor by remember { mutableStateOf(Color.Green) }
 
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                     if (foundColor != null) {
                         buttonColor = foundColor
                     } else {
-                        Log.d("ColorSearch", "[Цвет \"$inputText\" не найден!]")
+                        Log.d("UserTheme", "[Цвет \"$inputText\" не найден!]")
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
