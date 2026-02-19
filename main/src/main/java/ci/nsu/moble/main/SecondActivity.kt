@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ci.nsu.moble.main.ui.theme.PracticeTheme
 import androidx.navigation.compose.*
-import ci.nsu.moble.main.ui.Screens.HomeScreen
 
 
 sealed class Screen(val route: String) {
@@ -54,6 +53,7 @@ class SecondActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun currentRoute(navController: NavController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -62,17 +62,17 @@ fun currentRoute(navController: NavController): String? {
 
 @Composable
 fun HomeScreen() {
-    Text("Home Screen")
+    Text("[Home Screen]")
 }
 
 @Composable
 fun ScreenOne() {
-    Text("Screen One")
+    Text("[Screen One]")
 }
 
 @Composable
 fun ScreenTwo() {
-    Text("Screen Two")
+    Text("[Screen Two]")
 }
 
 
@@ -80,8 +80,6 @@ fun ScreenTwo() {
 @Composable
 fun SecondActivityScreen() {
     val navController = rememberNavController()
-
-    var selectedItem by remember { mutableStateOf(0) }
     val context = LocalContext.current
 
     var receivedText by remember { mutableStateOf("") }
@@ -103,13 +101,13 @@ fun SecondActivityScreen() {
                     }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = "[Назад]",
                             tint = Color.White
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Blue,
+                    containerColor = Color.Gray,
                     titleContentColor = Color.White
                 )
             )
@@ -138,7 +136,7 @@ fun SecondActivityScreen() {
                 )
 
                 NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Settings, null) },
+                    icon = { Icon(Icons.Filled.List, null) },
                     label = { Text("Screen Two") },
                     selected = currentRoute(navController) == Screen.ScreenTwo.route,
                     onClick = {
@@ -168,10 +166,10 @@ fun SecondActivityScreen() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    PracticeTheme {
-        SecondActivityScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun HomeScreenPreview() {
+//    PracticeTheme {
+//        SecondActivityScreen()
+//    }
+//}

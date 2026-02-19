@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// TODO:  here is to open the second activity
 @Composable
 fun MainScreenActivity(modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf("") }
@@ -53,7 +52,7 @@ fun MainScreenActivity(modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = text,
             onValueChange = { text = it },
-            label = { Text("Enter text") }
+            label = { Text("[Введите текст]") }
         )
         Button(
             onClick = {
@@ -63,7 +62,7 @@ fun MainScreenActivity(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.padding(top = 16.dp)
         ) {
-            Text("Open SecondActivity")
+            Text("[Открыть secondActivity]")
         }
     }
 }
