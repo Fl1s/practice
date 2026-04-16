@@ -25,8 +25,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ci.nsu.mobile.main.data.model.request.PersonDto
 import ci.nsu.mobile.main.data.model.request.RegisterRequest
-import ci.nsu.mobile.main.ui.screen.MainScreen
-import ci.nsu.mobile.main.ui.screen.RegisterScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -159,8 +157,8 @@ fun RegisterScreen(
             val request = RegisterRequest(
                 login = login,
                 password = password,
-                email = "",
-                phoneNumber = "",
+                email = "carcinoGeneticist@gmail.com",
+                phoneNumber = "+88005553535",
                 roleId = 1,
                 authAllowed = true,
                 person = PersonDto(
@@ -168,8 +166,8 @@ fun RegisterScreen(
                     lastName = "Test",
                     middleName = "",
                     birthDate = "2000-01-01",
-                    gender = "M",
-                    groupId = vm.groups.firstOrNull()?.groupId ?: 1
+                    gender = "MALE",
+                    groupId = 1
                 )
             )
 
