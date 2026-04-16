@@ -46,11 +46,11 @@ fun RegisterScreen(
             )
 
             vm.register(request, onSuccess)
-
         }) {
             Text("Зарегистрироваться")
         }
 
         if (vm.isLoading) CircularProgressIndicator()
+        vm.error?.let { Text(text = it, color = androidx.compose.ui.graphics.Color.Red) }
     }
 }
