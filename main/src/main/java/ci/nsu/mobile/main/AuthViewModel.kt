@@ -7,16 +7,12 @@ import ci.nsu.mobile.main.data.api.ApiClient
 import ci.nsu.mobile.main.data.model.dto.*
 import ci.nsu.mobile.main.data.model.request.*
 import ci.nsu.mobile.main.data.repository.AuthRepository
-import ci.nsu.mobile.main.TokenManager
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
-
     private val repo = AuthRepository(ApiClient.api)
-
     var users by mutableStateOf<List<UserDto>>(emptyList())
     var groups by mutableStateOf<List<GroupDto>>(emptyList())
-
     var isLoading by mutableStateOf(false)
     var error by mutableStateOf<String?>(null)
 
@@ -26,8 +22,7 @@ class AuthViewModel : ViewModel() {
             val result = repo.login(login, password)
             isLoading = false
 
-            result.onSuccess { onSuccess() }
-                .onFailure { error = it.message }
+            result.onSuccess { onSuccess() }.onFailure { error = it.message }
         }
     }
 
@@ -37,8 +32,7 @@ class AuthViewModel : ViewModel() {
             val result = repo.register(request)
             isLoading = false
 
-            result.onSuccess { onSuccess() }
-                .onFailure { error = it.message }
+            result.onSuccess { onSuccess() }.onFailure { error = it.message }
         }
     }
 
@@ -48,8 +42,7 @@ class AuthViewModel : ViewModel() {
             val result = repo.getUsers()
             isLoading = false
 
-            result.onSuccess { users = it }
-                .onFailure { error = it.message }
+            result.onSuccess { users = it }.onFailure { error = it.message }
         }
     }
 

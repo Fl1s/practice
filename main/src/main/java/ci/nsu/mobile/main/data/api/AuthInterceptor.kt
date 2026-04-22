@@ -10,8 +10,6 @@ class AuthInterceptor : Interceptor {
 
         val builder = chain.request().newBuilder()
 
-        builder.addHeader("Content-Type", "application/json")
-
         TokenManager.token?.let {
             builder.addHeader("Authorization", "Bearer $it")
         }
