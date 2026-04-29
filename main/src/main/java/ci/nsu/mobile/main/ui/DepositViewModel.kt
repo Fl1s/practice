@@ -9,8 +9,15 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class DepositViewModel(
-    private val dao: DepositDao, private val userId: Long
+    private val dao: DepositDao
 ) : ViewModel() {
+
+    private val _userId = MutableStateFlow(0L)
+
+    fun setUser(id: Long) {
+        _userId.value = id
+    }
+
     var startAmount by mutableStateOf("")
     var months by mutableStateOf("")
     var rate by mutableStateOf(0.0)
@@ -22,7 +29,11 @@ class DepositViewModel(
     var savedMessage by mutableStateOf<String?>(null)
 
     val history: StateFlow<List<DepositEntity>> =
-        dao.getByUser(userId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        _userId
+            .flatMapLatest { uid ->
+                if (uid > 0L) dao.getByUser(uid) else flowOf(emptyList())
+            }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun calculateDeposit() {
         val start = startAmount.toDoubleOrNull() ?: return
@@ -33,7 +44,7 @@ class DepositViewModel(
         repeat(m) { total = (total + topUp) * (1 + rate / 100) }
 
         result = DepositEntity(
-            userId = userId,
+            userId = _userId.value,
             startAmount = start,
             months = m,
             rate = rate,

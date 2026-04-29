@@ -49,12 +49,19 @@ fun AppNavGraph(authVm: AuthViewModel, depositVm: DepositViewModel) {
     val nav   = rememberNavController()
     val start = if (TokenManager.token != null) "main" else "login"
 
+    LaunchedEffect(Unit) {
+        if (start == "main") {
+            depositVm.setUser(TokenManager.userId ?: 0L)
+        }
+    }
+
     NavHost(navController = nav, startDestination = start) {
 
         composable("login") {
             LoginScreen(
-                vm            = authVm,
+                vm = authVm,
                 onLoginSuccess = {
+                    depositVm.setUser(TokenManager.userId ?: 0L)
                     nav.navigate("main") { popUpTo("login") { inclusive = true } }
                 },
                 onRegisterClick = { nav.navigate("register") }
@@ -70,6 +77,7 @@ fun AppNavGraph(authVm: AuthViewModel, depositVm: DepositViewModel) {
                 authVm    = authVm,
                 depositVm = depositVm,
                 onLogout  = {
+                    depositVm.setUser(0L)
                     authVm.logout()
                     nav.navigate("login") { popUpTo("main") { inclusive = true } }
                 }
@@ -145,7 +153,7 @@ fun UsersTab(vm: AuthViewModel) {
             items(vm.users) { user ->
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(12.dp)) {
-                        Text("ID: ${user.id}", style = MaterialTheme.typography.labelSmall)
+                        Text("ID: ${user.userId}", style = MaterialTheme.typography.labelSmall)
                         Text(user.login,        style = MaterialTheme.typography.bodyLarge)
                     }
                 }

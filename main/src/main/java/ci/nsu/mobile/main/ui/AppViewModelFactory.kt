@@ -13,7 +13,7 @@ class AppViewModelFactory(private val sl: ServiceLocator) : ViewModelProvider.Fa
             AuthViewModel(sl.authRepository) as T
 
         modelClass.isAssignableFrom(DepositViewModel::class.java) ->
-            DepositViewModel(sl.depositDao, TokenManager.userId ?: 0L) as T
+            DepositViewModel(sl.depositDao) as T
 
         else -> throw IllegalArgumentException("Неизвестный ViewModel: ${modelClass.name}")
     }

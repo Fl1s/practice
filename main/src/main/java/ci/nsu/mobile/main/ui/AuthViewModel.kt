@@ -16,12 +16,16 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
     var groups  by mutableStateOf<List<GroupDto>>(emptyList())
     var isLoading by mutableStateOf(false)
     var error   by mutableStateOf<String?>(null)
+    var currentUserId: Long = 0L
+        private set
 
     fun login(login: String, password: String, onSuccess: () -> Unit) {
         viewModelScope.launch {
             isLoading = true; error = null
             repo.login(login, password)
-                .onSuccess { onSuccess() }
+                .onSuccess { response ->
+                    onSuccess()
+                }
                 .onFailure { error = it.message }
             isLoading = false
         }

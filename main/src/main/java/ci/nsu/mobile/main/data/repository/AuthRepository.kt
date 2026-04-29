@@ -11,6 +11,9 @@ class AuthRepository(private val api: ApiService) {
         runCatching {
             val response = api.login(LoginRequest(login, password))
             TokenManager.token = response["token"]
+
+            val me = api.getUsers().find { it.login == login }
+            TokenManager.userId = me?.userId?.toLong() ?: 0L
         }
 
     suspend fun register(request: RegisterRequest): Result<Unit> =
