@@ -22,7 +22,6 @@ import ci.nsu.mobile.auth.ui.*
 import ci.nsu.mobile.auth.utils.QRManager
 import ci.nsu.mobile.calculations.ui.*
 import ci.nsu.mobile.main.ServiceLocator
-import ci.nsu.mobile.main.utils.FeedbackHelper
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -33,36 +32,12 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val factory = ViewModelFactory(ServiceLocator.authRepository, ServiceLocator.depositRepository)
     val authViewModel: AuthViewModel = viewModel(factory = factory)
-    val feedbackHelper = remember { FeedbackHelper(context) }
 
     val startDest = if (authViewModel.isUserLoggedIn) "main_flow" else "login"
 
     NavHost(navController = navController, startDestination = startDest) {
         composable("login") { LoginScreen(navController, authViewModel) }
         composable("register") { RegisterScreen(navController, authViewModel) }
-        composable("qr_scanner") {
-            QRScannerScreen(
-                onCodeScanned = { code ->
-                    val data = QRManager.parseQRContent(code)
-                    if (data != null) {
-                        feedbackHelper.playFeedback(true)
-                        feedbackHelper.showNotification("[Авторизация завершена!!!]", "[Выполняю вход...]")
-                        authViewModel.login(data.first, data.second)
-                        navController.popBackStack()
-                    } else {
-                        feedbackHelper.playFeedback(false)
-                        feedbackHelper.showNotification("[Ошибка сканирования...]", "[Неверный формат QR кода!!!]")
-                        navController.popBackStack()
-                    }
-                },
-                onTimeout = {
-                    feedbackHelper.playFeedback(false)
-                    feedbackHelper.showNotification("[Таймаут!]", "[Сканирование прервано]")
-                    navController.popBackStack()
-                },
-                onBack = { navController.popBackStack() }
-            )
-        }
         composable("main_flow") {
             MainContainerScreen(
                 rootNavController = navController,
