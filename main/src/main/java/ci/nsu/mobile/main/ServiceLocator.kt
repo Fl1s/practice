@@ -1,37 +1,18 @@
 package ci.nsu.mobile.main
 
 import android.content.Context
-import ci.nsu.mobile.main.dao.DepositDao
-import ci.nsu.mobile.main.data.api.ApiClient
-import ci.nsu.mobile.main.data.repository.AuthRepository
-import ci.nsu.mobile.main.data.db.AppDatabase
+import ci.nsu.mobile.auth.data.repository.AuthRepository
+import ci.nsu.mobile.calculations.data.local.DepositDatabase
+import ci.nsu.mobile.calculations.data.repository.DepositRepository
 
-class ServiceLocator private constructor(context: Context) {
+object ServiceLocator {
+    val authRepository: AuthRepository by lazy { AuthRepository() }
 
-    val authRepository: AuthRepository by lazy {
-        AuthRepository(ApiClient.api)
-    }
+    lateinit var depositRepository: DepositRepository
+        private set
 
-    private val database: AppDatabase by lazy {
-        AppDatabase.getInstance(context)
-    }
-
-    val depositDao: DepositDao by lazy {
-        database.depositDao()
-    }
-
-    companion object {
-        @Volatile
-        private var instance: ServiceLocator? = null
-
-        fun init(context: Context) {
-            if (instance == null) synchronized(this) {
-                if (instance == null)
-                    instance = ServiceLocator(context.applicationContext)
-            }
-        }
-
-        fun get(): ServiceLocator =
-            instance ?: error("ServiceLocator не инициализирован!!!")
+    fun init(context: Context) {
+        val db = DepositDatabase.Companion.getDatabase(context)
+        depositRepository = DepositRepository(db.depositDao())
     }
 }
