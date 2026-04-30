@@ -48,14 +48,6 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel) {
             OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("Пароль") }, visualTransformation = PasswordVisualTransformation(), modifier = Modifier.fillMaxWidth())
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (viewModel.isLoading) CircularProgressIndicator()
-            else {
-                Button(onClick = { viewModel.login(login, password) }, modifier = Modifier.fillMaxWidth()) { Text("Войти") }
-                OutlinedButton(onClick = { navController.navigate("qr_scanner") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
-                    Text("Через QR-код")
-                }
-                TextButton(onClick = { navController.navigate("register") }) { Text("Зарегистрироваться") }
-            }
         }
     }
 }

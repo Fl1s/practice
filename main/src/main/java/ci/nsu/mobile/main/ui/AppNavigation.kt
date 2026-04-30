@@ -19,7 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import ci.nsu.mobile.auth.ui.*
-import ci.nsu.mobile.auth.utils.QRManager
 import ci.nsu.mobile.calculations.ui.*
 import ci.nsu.mobile.main.ServiceLocator
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
