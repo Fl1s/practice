@@ -2,7 +2,6 @@ package ci.nsu.mobile.main
 
 import android.content.Context
 import ci.nsu.mobile.auth.AuthManagerImpl
-import ci.nsu.mobile.auth.TokenManager
 import ci.nsu.mobile.auth.data.api.ApiClient
 import ci.nsu.mobile.auth.data.repository.AuthRepository
 import ci.nsu.mobile.calculations.CalculationsProviderImpl

@@ -38,8 +38,8 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-//    implementation(project(":auth"))
-//    implementation(project(":calculations"))
+    implementation(project(":auth"))
+    implementation(project(":calculations"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -53,6 +53,7 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.room:room-runtime:2.6.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
