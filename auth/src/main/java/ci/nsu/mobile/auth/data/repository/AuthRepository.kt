@@ -1,22 +1,26 @@
 package ci.nsu.mobile.auth.data.repository
 
-import ci.nsu.mobile.auth.data.dto.AuthResponse
-import ci.nsu.mobile.auth.data.dto.GroupDto
-import ci.nsu.mobile.auth.data.dto.LoginRequest
-import ci.nsu.mobile.auth.data.dto.RegisterRequest
-import ci.nsu.mobile.auth.data.dto.UserDto
-import ci.nsu.mobile.auth.data.network.RetrofitClient
+import ci.nsu.mobile.auth.TokenManager
+import ci.nsu.mobile.auth.data.api.ApiService
+import ci.nsu.mobile.auth.data.model.dto.GroupDto
+import ci.nsu.mobile.auth.data.model.dto.UserDto
+import ci.nsu.mobile.auth.data.model.request.LoginRequest
+import ci.nsu.mobile.auth.data.model.request.RegisterRequest
 
-class AuthRepository {
-    suspend fun login(login: String, pass: String): Result<AuthResponse> =
-        runCatching { RetrofitClient.api.login(LoginRequest(login, pass)) }
+class AuthRepository(private val api: ApiService) {
 
-    suspend fun register(req: RegisterRequest): Result<Unit> =
-        runCatching { RetrofitClient.api.register(req) }
+    suspend fun login(login: String, password: String): Result<Unit> =
+        runCatching {
+            val response = api.login(LoginRequest(login, password))
+            TokenManager.token = response["token"]
+        }
+
+    suspend fun register(request: RegisterRequest): Result<Unit> =
+        runCatching { api.register(request) }
 
     suspend fun getUsers(): Result<List<UserDto>> =
-        runCatching { RetrofitClient.api.getUsers() }
+        runCatching { api.getUsers() }
 
     suspend fun getGroups(): Result<List<GroupDto>> =
-        runCatching { RetrofitClient.api.getGroups() }
+        runCatching { api.getGroups() }
 }

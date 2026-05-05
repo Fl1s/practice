@@ -1,10 +1,10 @@
-package ci.nsu.mobile.domain.calculations
+package ci.nsu.mobile.domain.interfaces
 
 import ci.nsu.mobile.domain.model.DepositCalculation
 import kotlinx.coroutines.flow.Flow
 
 interface CalculationsProvider {
     fun getCalculationsForUser(userId: Long): Flow<List<DepositCalculation>>
-    fun saveCalculation(calculation: DepositCalculation)
-    fun deleteCalculation(calculationId: Long)
+    suspend fun saveCalculation(calculation: DepositCalculation)
+    suspend fun deleteCalculation(calculationId: Long)
 }
