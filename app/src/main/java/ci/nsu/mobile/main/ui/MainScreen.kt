@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import ci.nsu.mobile.auth.ui.AuthViewModel
+import ci.nsu.mobile.auth.ui.QrViewModel
 import ci.nsu.mobile.auth.ui.screens.UsersTab
 import ci.nsu.mobile.calculations.ui.DepositViewModel
 import ci.nsu.mobile.calculations.ui.screens.DepositsTab
@@ -17,6 +18,7 @@ import ci.nsu.mobile.calculations.ui.screens.NewCalculationFlow
 fun MainScreen(
     authVm: AuthViewModel,
     depositVm: DepositViewModel,
+    qrVm: QrViewModel,
     onLogout: () -> Unit
 ) {
     var selectedTab by remember { mutableStateOf(0) }

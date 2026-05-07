@@ -12,16 +12,29 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
 
-    var users     by mutableStateOf<List<UserDto>>(emptyList())
-    var groups    by mutableStateOf<List<GroupDto>>(emptyList())
+    var users by mutableStateOf<List<UserDto>>(emptyList())
+    var groups by mutableStateOf<List<GroupDto>>(emptyList())
     var isLoading by mutableStateOf(false)
-    var error     by mutableStateOf<String?>(null)
+    var error by mutableStateOf<String?>(null)
+    var lastLogin    by mutableStateOf("")
+    var lastPassword by mutableStateOf("")
+    var qrLogin    by mutableStateOf<String?>(null)
+    var qrPassword by mutableStateOf<String?>(null)
+
+    fun clearQrData() {
+        qrLogin    = null
+        qrPassword = null
+    }
 
     fun login(login: String, password: String, onSuccess: () -> Unit) {
         viewModelScope.launch {
             isLoading = true; error = null
             repo.login(login, password)
-                .onSuccess { onSuccess() }
+                .onSuccess {
+                    lastLogin    = login
+                    lastPassword = password
+                    onSuccess()
+                }
                 .onFailure { error = it.message }
             isLoading = false
         }
@@ -30,28 +43,27 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
     fun register(request: RegisterRequest, onSuccess: () -> Unit) {
         viewModelScope.launch {
             isLoading = true; error = null
-            repo.register(request)
-                .onSuccess { onSuccess() }
-                .onFailure { error = it.message }
+            repo.register(request).onSuccess { onSuccess() }.onFailure { error = it.message }
             isLoading = false
         }
+    }
+
+    fun applyQrCredentials(login: String, password: String) {
+        qrLogin    = login
+        qrPassword = password
     }
 
     fun loadUsers() {
         viewModelScope.launch {
             isLoading = true
-            repo.getUsers()
-                .onSuccess { users = it }
-                .onFailure { error = it.message }
+            repo.getUsers().onSuccess { users = it }.onFailure { error = it.message }
             isLoading = false
         }
     }
 
     fun loadGroups() {
         viewModelScope.launch {
-            repo.getGroups()
-                .onSuccess { groups = it }
-                .onFailure { error = it.message }
+            repo.getGroups().onSuccess { groups = it }.onFailure { error = it.message }
         }
     }
 

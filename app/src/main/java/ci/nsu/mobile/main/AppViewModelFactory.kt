@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ci.nsu.mobile.auth.TokenManager
 import ci.nsu.mobile.auth.ui.AuthViewModel
+import ci.nsu.mobile.auth.ui.QrViewModel
 import ci.nsu.mobile.calculations.ui.DepositViewModel
 import ci.nsu.mobile.main.ServiceLocator
 
@@ -16,6 +17,9 @@ class AppViewModelFactory(private val sl: ServiceLocator) : ViewModelProvider.Fa
 
         modelClass.isAssignableFrom(DepositViewModel::class.java) ->
             DepositViewModel(sl.depositDao, TokenManager.userId ?: 0L) as T
+
+        modelClass.isAssignableFrom(QrViewModel::class.java) ->
+            QrViewModel() as T
 
         else -> throw IllegalArgumentException("Неизвестный ViewModel: ${modelClass.name}")
     }
