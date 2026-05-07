@@ -6,14 +6,16 @@ import androidx.lifecycle.viewModelScope
 import ci.nsu.mobile.calculations.data.dao.DepositDao
 import ci.nsu.mobile.calculations.data.entity.DepositEntity
 import ci.nsu.mobile.calculations.data.mapper.toDomain
+import ci.nsu.mobile.calculations.domain.DepositCalculator
 import ci.nsu.mobile.domain.model.DepositCalculation
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class DepositViewModel(
-    private val dao: DepositDao, private val userId: Long
+    private val dao: DepositDao,
+    private val userId: Long,
+    private val calculator: DepositCalculator = DepositCalculator()
 ) : ViewModel() {
-
     var startAmount by mutableStateOf("")
     var months by mutableStateOf("")
     var rate by mutableStateOf(0.0)
@@ -30,20 +32,10 @@ class DepositViewModel(
         val m = months.toIntOrNull() ?: return
         val topUp = monthlyTopUp.toDoubleOrNull() ?: 0.0
 
-        var total = start
-        repeat(m) { total = (total + topUp) * (1 + rate / 100) }
-
-        result = DepositCalculation(
-            userId = userId,
-            startAmount = start,
-            months = m,
-            rate = rate,
-            monthlyTopUp = topUp,
-            finalAmount = total,
-            profit = total - (start + topUp * m),
-            date = System.currentTimeMillis()
-        )
-        currentStep = 2
+        runCatching {
+            result = calculator.calculate(start, m, rate, topUp, userId)
+            currentStep = 2
+        }
     }
 
     fun saveDeposit() {
@@ -82,10 +74,6 @@ class DepositViewModel(
 
     fun resolveRate(): List<Double> {
         val m = months.toIntOrNull() ?: return emptyList()
-        return when {
-            m < 6 -> listOf(15.0)
-            m < 12 -> listOf(10.0)
-            else -> listOf(5.0)
-        }
+        return calculator.resolveRates(m)
     }
 }

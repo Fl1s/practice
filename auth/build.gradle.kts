@@ -48,4 +48,14 @@ dependencies {
 
     //запрос разрешений в Compose
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+
+    androidTestImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+
+    androidTestImplementation("app.cash.turbine:turbine:1.1.0")
+
+    androidTestImplementation("io.mockk:mockk-android:1.13.10")
+    testImplementation(kotlin("test"))
 }
