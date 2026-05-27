@@ -20,7 +20,7 @@ object NotificationHelper {
             "Сканирование QR-кода",
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = "Уведомления о результатах сканирования QR-кода авторизации"
+            description = "Уведомле ния о результатах сканирования QR-кода авторизации"
         }
         context.getSystemService(NotificationManager::class.java)
             .createNotificationChannel(channel)

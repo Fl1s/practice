@@ -42,7 +42,7 @@ fun QrScanScreen(
     val context = LocalContext.current
     val cameraPermission = rememberPermissionState(Manifest.permission.CAMERA)
 
-    // Инициализация звука и канала уведомлений
+    // Звук и уведомления
     LaunchedEffect(Unit) {
         vm.initSound(context)
         vm.startTimer()
@@ -57,7 +57,7 @@ fun QrScanScreen(
         }
     }
 
-    // Таймер истёк
+    // Таймер истек
     LaunchedEffect(vm.timerSeconds) {
         if (vm.timerSeconds == 0 && !vm.scanFinished) {
             onDismiss()
@@ -196,7 +196,7 @@ private fun PermissionRationaleContent(onRequest: () -> Unit, onDismiss: () -> U
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Для сканирования QR-кода необходим доступ к камере!",
+            "Для сканирования QR-кода необходим доступ к камере!!!",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge
         )

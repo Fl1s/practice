@@ -11,10 +11,7 @@ import java.io.FileOutputStream
 
 object QrSaver {
 
-    /**
-     * Сохраняет [bitmap] в галерею.
-     * используя MediaStore
-     */
+    // Сохраняет в галерею используя MediaStore
     fun saveToGallery(context: Context, bitmap: Bitmap, filename: String = "qr_auth.png"): Boolean =
         runCatching {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
