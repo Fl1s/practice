@@ -8,6 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import ci.nsu.mobile.auth.ui.AuthViewModel
 import ci.nsu.mobile.auth.ui.QrViewModel
+import ci.nsu.mobile.auth.ui.screens.QrProfileScreen
+import ci.nsu.mobile.auth.ui.screens.QrScanScreen
 import ci.nsu.mobile.auth.ui.screens.UsersTab
 import ci.nsu.mobile.calculations.ui.DepositViewModel
 import ci.nsu.mobile.calculations.ui.screens.DepositsTab
@@ -48,11 +50,17 @@ fun MainScreen(
                     icon     = { Icon(Icons.Default.List, null) },
                     label    = { Text("Мои расчёты") }
                 )
+//                NavigationBarItem(
+//                    selected = selectedTab == 2,
+//                    onClick  = { selectedTab = 2 },
+//                    icon     = { Icon(Icons.Default.Add, null) },
+//                    label    = { Text("Новый расчёт") }
+//                )
                 NavigationBarItem(
-                    selected = selectedTab == 2,
-                    onClick  = { selectedTab = 2 },
+                    selected = selectedTab == 3,
+                    onClick  = { selectedTab = 3 },
                     icon     = { Icon(Icons.Default.Add, null) },
-                    label    = { Text("Новый расчёт") }
+                    label    = { Text("Экран qr") }
                 )
             }
         }
@@ -62,6 +70,7 @@ fun MainScreen(
                 0 -> UsersTab(authVm)       // из модуля :auth
                 1 -> DepositsTab(depositVm) // из модуля :calculations
                 2 -> NewCalculationFlow(depositVm) // из модуля :calculations
+                3 -> QrProfileScreen(authVm, qrVm, onLogout = onLogout)
             }
         }
     }
