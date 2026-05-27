@@ -15,7 +15,7 @@ import ci.nsu.mobile.auth.ui.QrViewModel
 import ci.nsu.mobile.auth.ui.screens.LoginScreen
 import ci.nsu.mobile.auth.ui.screens.QrScanScreen
 import ci.nsu.mobile.auth.ui.screens.RegisterScreen
-import ci.nsu.mobile.calculations.ui.DepositViewModel
+import ci.nsu.mobile.calculations.data.ui.DepositViewModel
 import ci.nsu.mobile.main.ui.AppViewModelFactory
 import ci.nsu.mobile.main.ui.MainScreen
 
@@ -43,6 +43,7 @@ fun AppRoot() {
 
         composable("login") {
             LoginScreen(vm = authVm, onLoginSuccess = {
+                depositVm.reloadForUser()
                 nav.navigate("main") { popUpTo("login") { inclusive = true } }
             }, onRegisterClick = { nav.navigate("register") }, onQrScanClick = {
                 qrVm.resetScan()
@@ -65,6 +66,7 @@ fun AppRoot() {
             MainScreen(
                 authVm = authVm, depositVm = depositVm, qrVm = qrVm, onLogout = {
                     authVm.logout()
+                    depositVm.reloadForUser()
                     nav.navigate("login") { popUpTo("main") { inclusive = true } }
                 })
         }

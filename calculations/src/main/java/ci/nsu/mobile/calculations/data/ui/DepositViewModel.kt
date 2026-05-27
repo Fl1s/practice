@@ -1,4 +1,4 @@
-package ci.nsu.mobile.calculations.ui
+package ci.nsu.mobile.calculations.data.ui
 
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class DepositViewModel(
-    private val dao: DepositDao, private val userId: Long
+    private val dao: DepositDao, private val getUserId: () -> Int
 ) : ViewModel() {
 
     var startAmount by mutableStateOf("")
@@ -22,8 +22,19 @@ class DepositViewModel(
     var result by mutableStateOf<DepositCalculation?>(null)
     var savedMessage by mutableStateOf<String?>(null)
 
-    val history: StateFlow<List<DepositCalculation>> = dao.getByUser(userId).map { list -> list.map { it.toDomain() } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    private val _currentUserId = MutableStateFlow(getUserId())
+
+    val history: StateFlow<List<DepositCalculation>> = _currentUserId.flatMapLatest { uid ->
+        // uid == 0 = не залогинен
+        if (uid == 0) flowOf(emptyList())
+        else dao.getByUser(uid).map { list -> list.map { it.toDomain() } }
+    }.stateIn(
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(5_000), initialValue = emptyList()
+    )
+
+    fun reloadForUser() {
+        _currentUserId.value = getUserId()
+    }
 
     fun calculateDeposit() {
         val start = startAmount.toDoubleOrNull() ?: return
@@ -34,7 +45,7 @@ class DepositViewModel(
         repeat(m) { total = (total + topUp) * (1 + rate / 100) }
 
         result = DepositCalculation(
-            userId = userId,
+            userId = _currentUserId.value,
             startAmount = start,
             months = m,
             rate = rate,
@@ -51,7 +62,7 @@ class DepositViewModel(
         viewModelScope.launch {
             dao.insert(
                 DepositEntity(
-                    userId = calc.userId,
+                    userId = _currentUserId.value,
                     startAmount = calc.startAmount,
                     months = calc.months,
                     rate = calc.rate,
@@ -66,9 +77,7 @@ class DepositViewModel(
     }
 
     fun deleteDeposit(calc: DepositCalculation) {
-        viewModelScope.launch {
-            dao.deleteById(calc.id)
-        }
+        viewModelScope.launch { dao.deleteById(calc.id) }
     }
 
     fun resetCalculation() {

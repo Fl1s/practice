@@ -16,13 +16,13 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
     var groups by mutableStateOf<List<GroupDto>>(emptyList())
     var isLoading by mutableStateOf(false)
     var error by mutableStateOf<String?>(null)
-    var lastLogin    by mutableStateOf("")
+    var lastLogin by mutableStateOf("")
     var lastPassword by mutableStateOf("")
-    var qrLogin    by mutableStateOf<String?>(null)
+    var qrLogin by mutableStateOf<String?>(null)
     var qrPassword by mutableStateOf<String?>(null)
 
     fun clearQrData() {
-        qrLogin    = null
+        qrLogin = null
         qrPassword = null
     }
 
@@ -31,7 +31,7 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
             isLoading = true; error = null
             repo.login(login, password)
                 .onSuccess {
-                    lastLogin    = login
+                    lastLogin = login
                     lastPassword = password
                     onSuccess()
                 }
@@ -49,7 +49,7 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
     }
 
     fun applyQrCredentials(login: String, password: String) {
-        qrLogin    = login
+        qrLogin = login
         qrPassword = password
     }
 
@@ -67,5 +67,7 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
         }
     }
 
-    fun logout() = TokenManager.clear()
+    fun logout() {
+        TokenManager.clear()
+    }
 }

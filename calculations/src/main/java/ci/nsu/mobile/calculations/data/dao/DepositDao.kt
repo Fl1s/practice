@@ -14,8 +14,8 @@ interface DepositDao {
     suspend fun delete(deposit: DepositEntity)
 
     @Query("DELETE FROM deposits WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun deleteById(id: Int)
 
     @Query("SELECT * FROM deposits WHERE userId = :userId ORDER BY date DESC")
-    fun getByUser(userId: Long): Flow<List<DepositEntity>>
+    fun getByUser(userId: Int): Flow<List<DepositEntity>>
 }

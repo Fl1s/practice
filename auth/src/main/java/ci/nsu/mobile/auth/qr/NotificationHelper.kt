@@ -3,6 +3,7 @@ package ci.nsu.mobile.auth.qr
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.core.app.NotificationCompat
@@ -15,12 +16,16 @@ object NotificationHelper {
     private const val NOTIF_ID_ERR = 1002
 
     fun createChannel(context: Context) {
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            "Сканирование QR-кода",
-            NotificationManager.IMPORTANCE_DEFAULT
-        ).apply {
-            description = "Уведомле ния о результатах сканирования QR-кода авторизации"
+        val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel(
+                CHANNEL_ID,
+                "Сканирование QR-кода",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Уведомле ния о результатах сканирования QR-кода авторизации"
+            }
+        } else {
+            TODO("VERSION.SDK_INT < O")
         }
         context.getSystemService(NotificationManager::class.java)
             .createNotificationChannel(channel)

@@ -1,8 +1,8 @@
 package ci.nsu.mobile.domain.model
 
 data class DepositCalculation(
-    val id: Long = 0L,
-    val userId: Long = 0L,
+    val id: Int = 0,
+    val userId: Int = 0,
     val startAmount: Double,
     val months: Int,
     val rate: Double,

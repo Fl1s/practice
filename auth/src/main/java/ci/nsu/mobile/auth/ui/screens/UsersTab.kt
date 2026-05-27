@@ -25,7 +25,7 @@ fun UsersTab(vm: AuthViewModel) {
             items(vm.users) { user ->
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(12.dp)) {
-                        Text("ID: ${user.id}",  style = MaterialTheme.typography.labelSmall)
+                        Text("ID: ${user.userId}",  style = MaterialTheme.typography.labelSmall)
                         Text(user.login,         style = MaterialTheme.typography.bodyLarge)
                     }
                 }

@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ci.nsu.mobile.calculations.ui.DepositViewModel
+import ci.nsu.mobile.calculations.data.ui.DepositViewModel
 import ci.nsu.mobile.domain.model.DepositCalculation
 import java.text.SimpleDateFormat
 import java.util.*

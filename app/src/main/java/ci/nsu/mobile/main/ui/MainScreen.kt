@@ -9,9 +9,8 @@ import androidx.compose.ui.Modifier
 import ci.nsu.mobile.auth.ui.AuthViewModel
 import ci.nsu.mobile.auth.ui.QrViewModel
 import ci.nsu.mobile.auth.ui.screens.QrProfileScreen
-import ci.nsu.mobile.auth.ui.screens.QrScanScreen
 import ci.nsu.mobile.auth.ui.screens.UsersTab
-import ci.nsu.mobile.calculations.ui.DepositViewModel
+import ci.nsu.mobile.calculations.data.ui.DepositViewModel
 import ci.nsu.mobile.calculations.ui.screens.DepositsTab
 import ci.nsu.mobile.calculations.ui.screens.NewCalculationFlow
 
@@ -50,12 +49,12 @@ fun MainScreen(
                     icon     = { Icon(Icons.Default.List, null) },
                     label    = { Text("Мои расчёты") }
                 )
-//                NavigationBarItem(
-//                    selected = selectedTab == 2,
-//                    onClick  = { selectedTab = 2 },
-//                    icon     = { Icon(Icons.Default.Add, null) },
-//                    label    = { Text("Новый расчёт") }
-//                )
+                NavigationBarItem(
+                    selected = selectedTab == 2,
+                    onClick  = { selectedTab = 2 },
+                    icon     = { Icon(Icons.Default.Add, null) },
+                    label    = { Text("Новый расчёт") }
+                )
                 NavigationBarItem(
                     selected = selectedTab == 3,
                     onClick  = { selectedTab = 3 },

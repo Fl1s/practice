@@ -9,9 +9,11 @@ import ci.nsu.mobile.auth.qr.NotificationHelper
 import ci.nsu.mobile.auth.qr.QrGenerator
 import ci.nsu.mobile.auth.qr.QrSaver
 import ci.nsu.mobile.auth.qr.SoundManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class QrViewModel : ViewModel() {
 
@@ -24,17 +26,21 @@ class QrViewModel : ViewModel() {
 
     fun generateQr(login: String, password: String) {
         val content = "$login:$password"   // формат login:password
-        generatedQr  = QrGenerator.generate(content)
+        generatedQr = QrGenerator.generate(content)
         showQrDialog = true
         savedMessage = null
     }
 
-    fun dismissQrDialog() { showQrDialog = false }
+    fun dismissQrDialog() {
+        showQrDialog = false
+    }
 
     fun saveQrToGallery(context: Context) {
         val bmp = generatedQr ?: return
         viewModelScope.launch {
-            val ok = QrSaver.saveToGallery(context, bmp)
+            val ok = withContext(Dispatchers.IO) {
+                QrSaver.saveToGallery(context, bmp)
+            }
             savedMessage = if (ok) "Сохранено в галерею" else "Ошибка сохранения"
         }
     }
@@ -43,7 +49,7 @@ class QrViewModel : ViewModel() {
         private set
     var scanFinished by mutableStateOf(false)
         private set
-    var scannedLogin    by mutableStateOf<String?>(null)
+    var scannedLogin by mutableStateOf<String?>(null)
         private set
     var scannedPassword by mutableStateOf<String?>(null)
         private set
@@ -69,7 +75,9 @@ class QrViewModel : ViewModel() {
         }
     }
 
-    fun stopTimer() { timerJob?.cancel() }
+    fun stopTimer() {
+        timerJob?.cancel()
+    }
 
     fun onQrScanned(context: Context, raw: String) {
         if (scanFinished) return
@@ -78,7 +86,7 @@ class QrViewModel : ViewModel() {
 
         val parts = raw.split(":")
         if (parts.size >= 2) {
-            scannedLogin    = parts[0]
+            scannedLogin = parts[0]
             scannedPassword = parts.drop(1).joinToString(":")
             soundManager?.playSuccess()
             NotificationHelper.notifySuccess(context)
@@ -94,9 +102,9 @@ class QrViewModel : ViewModel() {
     }
 
     fun resetScan() {
-        timerSeconds    = 30
-        scanFinished    = false
-        scannedLogin    = null
+        timerSeconds = 30
+        scanFinished = false
+        scannedLogin = null
         scannedPassword = null
     }
 

@@ -19,7 +19,9 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
@@ -153,21 +155,21 @@ private fun CameraPreviewContent(vm: QrViewModel, context: Context) {
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 48.dp).background(
-                    Color.Black.copy(alpha = 0.5f), RoundedCornerShape(8.dp)
-                ).padding(horizontal = 16.dp, vertical = 8.dp)
+                Color.Black.copy(alpha = 0.5f), RoundedCornerShape(8.dp)
+            ).padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }
 }
 
 @Composable
 private fun ScannerOverlay() {
-    Canvas(Modifier.fillMaxSize()) {
+    Canvas(
+        Modifier.fillMaxSize().graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }) {
         val frameSize = size.minDimension * 0.6f
         val left = (size.width - frameSize) / 2f
         val top = (size.height - frameSize) / 2f
         val stroke = 4.dp.toPx()
         val corner = 20.dp.toPx()
-
         drawRect(Color.Black.copy(alpha = 0.55f))
 
         drawRoundRect(
@@ -177,7 +179,6 @@ private fun ScannerOverlay() {
             cornerRadius = CornerRadius(corner),
             blendMode = androidx.compose.ui.graphics.BlendMode.Clear
         )
-
         drawRoundRect(
             color = Color(0xFF4CAF50),
             topLeft = Offset(left, top),

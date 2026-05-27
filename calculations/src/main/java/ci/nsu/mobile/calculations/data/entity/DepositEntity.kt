@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "deposits")
 data class DepositEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
-    val userId: Long = 0L,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val userId: Int = 0,
     val startAmount: Double,
     val months: Int,
     val rate: Double,

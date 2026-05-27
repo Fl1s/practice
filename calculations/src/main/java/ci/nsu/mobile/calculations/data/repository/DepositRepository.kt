@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 
 class DepositRepository(private val dao: DepositDao) {
 
-    fun getByUser(userId: Long): Flow<List<DepositCalculation>> =
+    fun getByUser(userId: Int): Flow<List<DepositCalculation>> =
         dao.getByUser(userId).map { list -> list.map { it.toDomain() } }
 
     suspend fun save(entity: DepositEntity) = dao.insert(entity)

@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.map
 
 class CalculationsProviderImpl(private val dao: DepositDao) : CalculationsProvider {
 
-    override fun getCalculationsForUser(userId: Long): Flow<List<DepositCalculation>> =
+    override fun getCalculationsForUser(userId: Int): Flow<List<DepositCalculation>> =
         dao.getByUser(userId).map { list -> list.map { it.toDomain() } }
 
     override suspend fun saveCalculation(calculation: DepositCalculation) {
         dao.insert(calculation.toEntity())
     }
 
-    override suspend fun deleteCalculation(calculationId: Long) {
+    override suspend fun deleteCalculation(calculationId: Int) {
         dao.deleteById(calculationId)
     }
 }
